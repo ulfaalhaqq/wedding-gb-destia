@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+@theme {
+  --color-wedding-maroon: #4A1521;
+  --color-wedding-gold: #C5A880;
+  --color-wedding-cream: #F9F6F0;
+  --color-wedding-taupe: #8C6D53;
+}
