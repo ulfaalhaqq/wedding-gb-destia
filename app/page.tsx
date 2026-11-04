@@ -22,18 +22,18 @@ import {
   Heart,
 } from "lucide-react";
 
-/* Foto diambil dari folder app/image (satu level dengan page.tsx).
-   Isi folder: cover.png, groom.png, bride.png, thanks.png, galeri-1.png ... galeri-6.png */
-import coverImg from "./image/cover.png";
-import groomImg from "./image/groom.png";
-import brideImg from "./image/bride.png";
-import thanksImg from "./image/thanks.png";
-import galeri1 from "./image/galeri-1.png";
-import galeri2 from "./image/galeri-2.png";
-import galeri3 from "./image/galeri-3.png";
-import galeri4 from "./image/galeri-4.png";
-import galeri5 from "./image/galeri-5.png";
-import galeri6 from "./image/galeri-6.png";
+/* Foto diambil dari folder app/image (format JPG terkompresi).
+   Isi folder: cover.jpg, groom.jpg, bride.jpg, thanks.jpg, galeri-1.jpg ... galeri-6.jpg */
+import coverImg from "./image/cover.jpg";
+import groomImg from "./image/groom.jpg";
+import brideImg from "./image/bride.jpg";
+import thanksImg from "./image/thanks.jpg";
+import galeri1 from "./image/galeri-1.jpg";
+import galeri2 from "./image/galeri-2.jpg";
+import galeri3 from "./image/galeri-3.jpg";
+import galeri4 from "./image/galeri-4.jpg";
+import galeri5 from "./image/galeri-5.jpg";
+import galeri6 from "./image/galeri-6.jpg";
 
 /* ============================================================
    KONFIGURASI — ganti data & foto di sini saja
@@ -53,26 +53,22 @@ const COUPLE = {
   dateText: "21 . 11 . 2026",
 };
 
-/* Watermark pembuat web — ganti nama brand di sini */
+/* Watermark pembuat web */
 const BRAND = "@ulfa.dev";
 const IG_URL = "https://www.instagram.com/ulfa.dev/";
 const LINKEDIN_URL = "https://www.linkedin.com/in/ulfaalhaq/";
 
 const PHOTOS = {
-  cover: coverImg.src, // foto utama (cover, beranda, panel desktop)
-  groom: groomImg.src, // foto mempelai pria
-  bride: brideImg.src, // foto mempelai wanita
-  thanks: thanksImg.src, // foto penutup
+  cover: coverImg.src,
+  groom: groomImg.src,
+  bride: brideImg.src,
+  thanks: thanksImg.src,
   gallery: [galeri1, galeri2, galeri3, galeri4, galeri5, galeri6].map(
     (g) => g.src,
   ),
 };
 
-/* Lokasi pernikahan (tanda rumah di peta).
-   Supaya muncul PIN MERAH tepat di rumah, isi MAP_QUERY dengan KOORDINAT rumahnya:
-   buka Google Maps -> tekan lama / klik kanan di titik rumah -> salin angka koordinat
-   (contoh: '-7.8123,112.1234') lalu tempel di bawah.
-   Kalau diisi nama desa saja, Google hanya menampilkan garis batas wilayah, bukan pin. */
+/* Lokasi pernikahan */
 const MAP_QUERY = "-7.850189,112.135450";
 const MAP_EMBED = `https://www.google.com/maps?q=${encodeURIComponent(MAP_QUERY)}&z=18&output=embed`;
 const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(MAP_QUERY)}`;
@@ -92,13 +88,11 @@ const IMG = {
   border: "/jawa/border-megamendung.png",
 };
 
-/* Tirai maroon tua (cover): lipatan kain + rumbai emas */
 const CURTAIN_BG =
   "repeating-linear-gradient(90deg,#2a0007 0px,#5c0a1f 14px,#8a1a33 26px,#5c0a1f 38px,#2a0007 52px)";
 const CURTAIN_FRINGE =
   "repeating-linear-gradient(90deg,#f6e3a8 0 3px,#b8893a 3px 7px)";
 
-/* Tombol bulat kiri atas (kembali ke cover & musik) */
 const TOP_BTN =
   "flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-[#d8b46a] bg-[#6a0119] text-[#f6dede] shadow-xl transition active:scale-90 sm:h-11 sm:w-11";
 
@@ -114,9 +108,6 @@ const NAV = [
   { id: "game", icon: Gamepad2, label: "Game" },
 ];
 
-/* ============================================================
-   KOMPONEN ANIMASI & DEKORASI
-   ============================================================ */
 type From = "up" | "left" | "right" | "zoom";
 const OFFSETS: Record<From, object> = {
   up: { y: 40 },
@@ -149,7 +140,6 @@ function Reveal({
   );
 }
 
-/* Awan Mega Mendung yang melayang pelan */
 function Cloud({
   className = "",
   tone = "pink",
@@ -163,6 +153,8 @@ function Cloud({
       src={IMG.cloud}
       alt=""
       aria-hidden
+      loading="lazy"
+      decoding="async"
       className={`pointer-events-none absolute select-none ${tone === "maroon" ? "opacity-90" : "opacity-75"} ${className}`}
       animate={{
         x: [0, 18, 0, -14, 0],
@@ -178,13 +170,14 @@ function Cloud({
   );
 }
 
-/* Gunungan emas: bergoyang & bercahaya pelan */
 function Gunungan({ className = "" }: { className?: string }) {
   return (
     <motion.img
       src={IMG.gunungan}
       alt=""
       aria-hidden
+      loading="lazy"
+      decoding="async"
       className={`pointer-events-none select-none ${className}`}
       style={{ transformOrigin: "50% 100%" }}
       animate={{
@@ -201,13 +194,14 @@ function Gunungan({ className = "" }: { className?: string }) {
   );
 }
 
-/* Batik mega mendung di dasar halaman (bergerak halus naik-turun) */
 function CloudBorder({ className = "" }: { className?: string }) {
   return (
     <motion.img
       src={IMG.border}
       alt=""
       aria-hidden
+      loading="lazy"
+      decoding="async"
       className={`pointer-events-none absolute inset-x-0 w-full select-none ${className}`}
       animate={{ y: [0, -6, 0] }}
       transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
@@ -215,7 +209,6 @@ function CloudBorder({ className = "" }: { className?: string }) {
   );
 }
 
-/* Percikan emas seperti kunang-kunang yang naik perlahan */
 function Sparkles({
   count = 14,
   className = "",
@@ -258,7 +251,6 @@ function Sparkles({
   );
 }
 
-/* Foto oval dengan efek zoom pelan & cincin bercahaya */
 function OvalPhoto({
   src,
   alt,
@@ -279,6 +271,7 @@ function OvalPhoto({
         <motion.img
           src={src}
           alt={alt}
+          decoding="async"
           className="h-full w-full object-cover"
           animate={{ scale: [1, 1.09, 1] }}
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
@@ -288,7 +281,6 @@ function OvalPhoto({
   );
 }
 
-/* Angka countdown yang "berputar" saat berganti */
 function Flip({ value }: { value: number }) {
   return (
     <span className="relative block h-8 overflow-hidden sm:h-9">
@@ -308,7 +300,6 @@ function Flip({ value }: { value: number }) {
   );
 }
 
-/* Ikon sosial (SVG inline) */
 function IgIcon({ className = "" }: { className?: string }) {
   return (
     <svg
@@ -347,7 +338,6 @@ function LinkedinIcon({ className = "" }: { className?: string }) {
   );
 }
 
-/* Ornamen emas pojok (SVG, tanpa file gambar). Versi kanan dicerminkan dengan class "-scale-x-100" */
 function CornerOrnament({ className = "" }: { className?: string }) {
   const g = "#d8b46a";
   return (
@@ -369,13 +359,9 @@ function CornerOrnament({ className = "" }: { className?: string }) {
       }}
       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
     >
-      {/* sulur ke kanan */}
       <path d="M10 10 C28 4 48 8 58 22 C62 29 57 35 51 32" />
-      {/* sulur ke bawah */}
       <path d="M10 10 C24 18 34 32 32 48 C31 56 23 58 20 52" />
-      {/* sulur tengah */}
       <path d="M10 10 C22 10 36 18 41 30 C43 36 39 41 34 39" />
-      {/* sulur kecil di tepi */}
       <path d="M10 10 C16 4 26 2 34 4" />
       <path d="M10 10 C4 16 2 26 4 34" />
       <g fill={g} stroke="none">
@@ -392,7 +378,6 @@ function CornerOrnament({ className = "" }: { className?: string }) {
   );
 }
 
-/* Kilau yang menyapu tombol */
 function Sheen() {
   return (
     <motion.span
@@ -405,7 +390,6 @@ function Sheen() {
   );
 }
 
-/* Blok tanggal besar */
 function EventBlock({
   title,
   dayName,
@@ -454,11 +438,6 @@ function EventBlock({
   );
 }
 
-/* ============================================================
-   MINI GAME (tanpa database — semua berjalan di browser tamu)
-   ============================================================ */
-
-/* Ledakan hati yang melayang naik. Ganti burstKey (angka naik) untuk memutar ulang. */
 function HeartBurst({
   burstKey,
   className = "",
@@ -500,14 +479,9 @@ function HeartBurst({
   );
 }
 
-/* ============================================================
-   Game: labirin — antar mempelai pria ke mempelai wanita
-   Cara main: geser di dalam labirin, tekan tombol panah, atau pakai keyboard.
-   Labirin diacak setiap kali dimuat dan selalu bisa diselesaikan.
-   ============================================================ */
 const MAZE_N = 7;
 type MazeDir = "up" | "down" | "left" | "right";
-type MazeCell = { t: boolean; r: boolean; b: boolean; l: boolean }; // true = ada dinding
+type MazeCell = { t: boolean; r: boolean; b: boolean; l: boolean };
 
 function generateMaze(n: number): MazeCell[] {
   const cells: MazeCell[] = Array.from({ length: n * n }, () => ({
@@ -541,7 +515,6 @@ function generateMaze(n: number): MazeCell[] {
   return cells;
 }
 
-/* Efek suara (Web Audio, tanpa file) & getar untuk game */
 let sfxCtx: AudioContext | null = null;
 
 function tone(
@@ -583,30 +556,23 @@ function gameFx(kind: "step" | "bump" | "win" | "click" | "open") {
     if (sfxCtx.state === "suspended") sfxCtx.resume();
 
     if (kind === "open") {
-      /* buka undangan: tanpa suara, hanya getar (audio context cukup disiapkan) */
     } else if (kind === "click") {
-      /* tetesan air lembut */
       tone(784, 0, 0.35, "sine", 0.035, 0.012);
       tone(1175, 0.03, 0.3, "sine", 0.015, 0.012);
     } else if (kind === "step") {
-      /* denting kecil, nadanya berganti pelan tiap langkah */
       const notes = [659, 740, 831, 880, 988];
       const f = notes[Math.floor(Math.random() * notes.length)];
       tone(f, 0, 0.4, "sine", 0.03, 0.01);
     } else if (kind === "bump") {
-      /* ketukan tumpul dan hangat */
       tone(196, 0, 0.22, "sine", 0.06, 0.008);
       tone(147, 0.01, 0.25, "sine", 0.04, 0.008);
     } else {
-      /* kemenangan: arpeggio harp lembut + gema */
       [523, 659, 784, 1047, 1319].forEach((f, i) => {
         tone(f, i * 0.14, 1.2, "sine", 0.045, 0.02);
         tone(f * 2, i * 0.14, 0.6, "sine", 0.012, 0.02);
       });
     }
-  } catch {
-    /* audio tidak didukung — abaikan */
-  }
+  } catch {}
   try {
     if ("vibrate" in navigator) {
       if (kind === "open") navigator.vibrate([40, 50, 90]);
@@ -615,9 +581,7 @@ function gameFx(kind: "step" | "bump" | "win" | "click" | "open") {
       else if (kind === "bump") navigator.vibrate([30, 25, 30]);
       else navigator.vibrate([70, 40, 70, 40, 160]);
     }
-  } catch {
-    /* getar tidak didukung — abaikan */
-  }
+  } catch {}
 }
 
 function MazeGame() {
@@ -669,7 +633,6 @@ function MazeGame() {
     setWon(false);
   };
 
-  /* Geser jari / mouse di dalam labirin: tiap ~70% ukuran kotak = 1 langkah */
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     anchor.current = { x: e.clientX, y: e.clientY };
     e.currentTarget.setPointerCapture(e.pointerId);
@@ -723,7 +686,6 @@ function MazeGame() {
         onPointerCancel={endDrag}
         aria-label="Labirin: antar mempelai pria ke mempelai wanita"
       >
-        {/* Dinding */}
         <div
           className="absolute inset-0 grid"
           style={{ gridTemplateColumns: `repeat(${MAZE_N}, 1fr)` }}
@@ -746,7 +708,6 @@ function MazeGame() {
           })}
         </div>
 
-        {/* Tujuan: mempelai wanita */}
         <motion.div
           animate={{ opacity: won ? 0 : 1 }}
           transition={{ delay: won ? 0.5 : 0, duration: 0.3 }}
@@ -776,7 +737,6 @@ function MazeGame() {
           </motion.div>
         </motion.div>
 
-        {/* Pemain: mempelai pria */}
         {cells.length > 0 && (
           <motion.div
             initial={false}
@@ -802,7 +762,6 @@ function MazeGame() {
           </motion.div>
         )}
 
-        {/* Setelah bertemu: foto berdua muncul di tengah labirin */}
         {won && (
           <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-[#3a0009]/75">
             <motion.div
@@ -830,7 +789,6 @@ function MazeGame() {
         </div>
       </div>
 
-      {/* Tombol panah (alternatif selain digeser) */}
       <div data-nosfx className="mx-auto mt-4 grid w-fit grid-cols-3 gap-1.5">
         <span />
         <button
@@ -911,7 +869,6 @@ export default function WeddingInvitation() {
     seconds: 0,
   });
 
-  /* Bunyi & getar untuk semua tombol/link (kecuali panah game yang punya bunyi sendiri) */
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
       const el = (e.target as HTMLElement | null)?.closest("button, a");
@@ -922,7 +879,6 @@ export default function WeddingInvitation() {
     return () => document.removeEventListener("click", onClick, true);
   }, []);
 
-  /* Countdown */
   useEffect(() => {
     const tick = () => {
       const diff = TARGET - Date.now();
@@ -940,7 +896,6 @@ export default function WeddingInvitation() {
     return () => clearInterval(t);
   }, []);
 
-  /* Kunci scroll saat cover tampil */
   useEffect(() => {
     document.body.style.overflow = isOpen ? "" : "hidden";
     return () => {
@@ -948,7 +903,6 @@ export default function WeddingInvitation() {
     };
   }, [isOpen]);
 
-  /* Audio */
   useEffect(() => {
     const a = audioRef.current;
     if (!a) return;
@@ -957,7 +911,6 @@ export default function WeddingInvitation() {
     else a.pause();
   }, [isPlaying]);
 
-  /* Menu aktif sesuai posisi scroll */
   useEffect(() => {
     if (!isOpen) return;
     const onScroll = () => {
@@ -998,9 +951,9 @@ export default function WeddingInvitation() {
         rel="stylesheet"
       />
 
-      <audio ref={audioRef} src="/wedding-song.mp3" loop />
+      <audio ref={audioRef} src="/wedding-song.mp3" loop preload="auto" />
 
-      {/* ================= COVER (membuka seperti gapura) ================= */}
+      {/* ================= COVER ================= */}
       <AnimatePresence>
         {!isOpen && (
           <motion.div
@@ -1034,6 +987,7 @@ export default function WeddingInvitation() {
                 style={{ backgroundImage: CURTAIN_FRINGE }}
               />
             </motion.div>
+
             <motion.div
               initial={{ scaleX: 0 }}
               animate={{
@@ -1061,6 +1015,7 @@ export default function WeddingInvitation() {
                 style={{ backgroundImage: CURTAIN_FRINGE }}
               />
             </motion.div>
+
             <motion.div
               initial={{ y: "-110%" }}
               animate={{
@@ -1171,7 +1126,6 @@ export default function WeddingInvitation() {
       {/* ================= KONTEN ================= */}
       {isOpen && (
         <div className="relative lg:mx-auto lg:flex lg:max-w-[1000px] lg:items-start lg:justify-center lg:gap-10 lg:px-6">
-          {/* Dekorasi latar khusus desktop */}
           <div
             className="pointer-events-none fixed inset-0 hidden overflow-hidden lg:block"
             aria-hidden
@@ -1189,7 +1143,6 @@ export default function WeddingInvitation() {
             <Sparkles count={16} />
           </div>
 
-          {/* Panel kiri khusus desktop */}
           <aside className="relative hidden overflow-hidden rounded-t-[999px] rounded-b-3xl border-2 border-[#d8b46a]/70 shadow-2xl lg:sticky lg:top-6 lg:my-6 lg:block lg:h-[calc(100vh-3rem)] lg:max-h-[820px] lg:w-[380px] lg:shrink-0">
             <img
               src={PHOTOS.cover}
@@ -1211,9 +1164,7 @@ export default function WeddingInvitation() {
             </div>
           </aside>
 
-          {/* Kolom konten (layout mobile, dipusatkan di desktop) */}
           <div className="relative w-full bg-white lg:my-6 lg:w-[480px] lg:shrink-0 lg:overflow-clip lg:rounded-3xl lg:shadow-2xl lg:ring-1 lg:ring-[#d8b46a]/60">
-            {/* Progress scroll emas */}
             <div className="sticky top-0 z-40 h-0">
               <motion.div
                 style={{ scaleX: scrollYProgress }}
@@ -1221,7 +1172,6 @@ export default function WeddingInvitation() {
               />
             </div>
 
-            {/* Tombol kembali ke cover & musik (kiri atas) */}
             <div className="pointer-events-none sticky top-0 z-40 h-0">
               <div
                 className="pointer-events-auto absolute left-3 flex items-center gap-2"
@@ -1257,7 +1207,6 @@ export default function WeddingInvitation() {
               </div>
             </div>
 
-            {/* Dock & tombol musik */}
             <div className="pointer-events-none sticky top-[calc(100dvh-84px)] z-40 h-0">
               <motion.nav
                 initial={{ y: 90, opacity: 0 }}
@@ -1301,7 +1250,6 @@ export default function WeddingInvitation() {
               id="home"
               className="relative overflow-hidden bg-[#fdf3f3] px-6 pb-20 pt-16 text-center"
             >
-              {/* Ornamen pojok atas kiri & kanan */}
               <CornerOrnament className="left-2 top-2 w-16 sm:w-20" />
               <CornerOrnament className="right-2 top-2 w-16 -scale-x-100 sm:w-20" />
               <Cloud className="-left-10 top-64 w-28" tone="maroon" />
@@ -1318,7 +1266,8 @@ export default function WeddingInvitation() {
                   </div>
                 </Reveal>
 
-                <Reveal from="zoom" className="mb-6 mt-6 w-full lg:hidden">
+                {/* Bagian Foto & Judul Utama (Aktif di HP & Desktop) */}
+                <Reveal from="zoom" className="mb-6 mt-6 w-full">
                   <p className="mb-4 text-[11px] uppercase tracking-[0.4em]">
                     The Wedding Of
                   </p>
@@ -1348,7 +1297,6 @@ export default function WeddingInvitation() {
                   </span>
                 </motion.h1>
 
-                {/* COUNTDOWN (sekarang di atas) */}
                 <Reveal delay={0.1} className="mt-4 w-full">
                   <p className="mx-auto mb-4 max-w-xs text-xs font-light italic leading-relaxed tracking-wide sm:text-sm">
                     Dengan penuh sukacita, kami mengundang Bapak/Ibu/Saudara/i
@@ -1375,7 +1323,6 @@ export default function WeddingInvitation() {
                   </div>
                 </Reveal>
 
-                {/* SAVE THE DATE (menempel di countdown) */}
                 <Reveal delay={0.2} className="mt-6">
                   <motion.a
                     whileHover={{ scale: 1.05 }}
@@ -1536,7 +1483,6 @@ export default function WeddingInvitation() {
                 </p>
               </div>
 
-              {/* Peta lokasi */}
               <Reveal from="zoom" className="relative mt-8">
                 <h3
                   style={{
@@ -1555,14 +1501,12 @@ export default function WeddingInvitation() {
                       className="h-72 w-full sm:h-80"
                       style={{
                         border: 0,
-                        /* grayscale = hilangkan hijau; brightness turun + contrast naik = nama tempat & jalan lebih tajam */
                         filter: "grayscale(1) brightness(0.8) contrast(1.6)",
                       }}
                       loading="lazy"
                       allowFullScreen
                       referrerPolicy="no-referrer-when-downgrade"
                     />
-                    {/* Tint warna tema: hanya mengubah warna, tidak menutupi detail peta */}
                     <div className="pointer-events-none absolute inset-0 bg-[#8a1a33] opacity-60 mix-blend-color" />
                   </div>
                 </div>
@@ -1617,6 +1561,8 @@ export default function WeddingInvitation() {
                       <motion.img
                         src={src}
                         alt={`Galeri ${i + 1}`}
+                        loading="lazy"
+                        decoding="async"
                         whileHover={{ scale: 1.12 }}
                         transition={{ duration: 0.6 }}
                         className="aspect-[3/4] w-full object-cover"
