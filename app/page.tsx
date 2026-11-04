@@ -20,6 +20,7 @@ import {
   ChevronUp,
   ChevronDown,
   Heart,
+  RotateCw,
 } from "lucide-react";
 
 /* Foto diambil dari folder app/image (format JPG terkompresi).
@@ -861,6 +862,8 @@ export default function WeddingInvitation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [active, setActive] = useState("home");
+  /* Dipakai untuk memuat ulang iframe peta saat crash (ikon sedih) */
+  const [mapKey, setMapKey] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { scrollYProgress } = useScroll();
 
@@ -1490,7 +1493,9 @@ export default function WeddingInvitation() {
               {/* FIX PETA: Reveal (animasi scale) hanya membungkus judul.
                   Iframe tidak lagi di dalam elemen yang di-animate, tanpa
                   CSS filter berat, dan tanpa loading="lazy" supaya tidak
-                  crash/reload saat scroll di HP. */}
+                  crash/reload saat scroll di HP.
+                  TAMBAHAN: tombol "Muat ulang peta" di bawah ikon sedih
+                  (peta crash) untuk memuat ulang iframe lewat `mapKey`. */}
               <div className="relative mt-8">
                 <Reveal from="zoom">
                   <h3
@@ -1506,6 +1511,7 @@ export default function WeddingInvitation() {
                 <div className="mt-4 rounded-[1.75rem] border-2 border-[#d8b46a] p-1.5 shadow-2xl">
                   <div className="relative overflow-hidden rounded-[1.25rem] border border-[#d8b46a]/70 bg-[#3a0009]">
                     <iframe
+                      key={mapKey}
                       title="Peta lokasi pernikahan"
                       src={MAP_EMBED}
                       className="h-72 w-full sm:h-80"
@@ -1514,6 +1520,14 @@ export default function WeddingInvitation() {
                       referrerPolicy="no-referrer-when-downgrade"
                     />
                     <div className="pointer-events-none absolute inset-0 bg-[#8a1a33]/25" />
+                    <button
+                      type="button"
+                      onClick={() => setMapKey((k) => k + 1)}
+                      aria-label="Muat ulang peta"
+                      className="absolute left-1/2 top-[80%] z-10 inline-flex -translate-x-1/2 cursor-pointer items-center gap-1.5 rounded-full border border-[#d8b46a] bg-[#6a0119]/90 px-3.5 py-1.5 text-[10px] font-medium uppercase tracking-wider text-[#f6dede] shadow-lg transition active:scale-90"
+                    >
+                      <RotateCw className="h-3 w-3" /> Muat ulang
+                    </button>
                   </div>
                 </div>
                 <motion.a
