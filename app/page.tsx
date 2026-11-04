@@ -855,6 +855,54 @@ function MazeGame() {
   );
 }
 
+/* Peta dimuat hanya saat bagian peta mendekati layar, dan dibuang lagi
+   saat menjauh (mis. ke bagian game) supaya tidak crash karena memori.
+   Tombol "Muat ulang" tetap tersedia kalau peta masih rusak. */
+function MapEmbed() {
+  const boxRef = useRef<HTMLDivElement | null>(null);
+  const [show, setShow] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
+
+  useEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setShow(entry.isIntersecting),
+      { rootMargin: "300px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={boxRef}
+      className="relative h-72 overflow-hidden rounded-[1.25rem] border border-[#d8b46a]/70 bg-[#3a0009] sm:h-80"
+    >
+      {show && (
+        <iframe
+          key={reloadKey}
+          title="Peta lokasi pernikahan"
+          src={MAP_EMBED}
+          className="h-full w-full"
+          style={{ border: 0 }}
+          allowFullScreen
+          referrerPolicy="no-referrer-when-downgrade"
+        />
+      )}
+      <div className="pointer-events-none absolute inset-0 bg-[#8a1a33]/25" />
+      <button
+        type="button"
+        onClick={() => setReloadKey((k) => k + 1)}
+        aria-label="Muat ulang peta"
+        className="absolute left-1/2 top-[80%] z-10 inline-flex -translate-x-1/2 cursor-pointer items-center gap-1.5 rounded-full border border-[#d8b46a] bg-[#6a0119]/90 px-3.5 py-1.5 text-[10px] font-medium uppercase tracking-wider text-[#f6dede] shadow-lg transition active:scale-90"
+      >
+        <RotateCw className="h-3 w-3" /> Muat ulang
+      </button>
+    </div>
+  );
+}
+
 /* ============================================================
    HALAMAN UTAMA
    ============================================================ */
@@ -862,8 +910,6 @@ export default function WeddingInvitation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [active, setActive] = useState("home");
-  /* Dipakai untuk memuat ulang iframe peta saat crash (ikon sedih) */
-  const [mapKey, setMapKey] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { scrollYProgress } = useScroll();
 
@@ -1509,26 +1555,7 @@ export default function WeddingInvitation() {
                   </h3>
                 </Reveal>
                 <div className="mt-4 rounded-[1.75rem] border-2 border-[#d8b46a] p-1.5 shadow-2xl">
-                  <div className="relative overflow-hidden rounded-[1.25rem] border border-[#d8b46a]/70 bg-[#3a0009]">
-                    <iframe
-                      key={mapKey}
-                      title="Peta lokasi pernikahan"
-                      src={MAP_EMBED}
-                      className="h-72 w-full sm:h-80"
-                      style={{ border: 0 }}
-                      allowFullScreen
-                      referrerPolicy="no-referrer-when-downgrade"
-                    />
-                    <div className="pointer-events-none absolute inset-0 bg-[#8a1a33]/25" />
-                    <button
-                      type="button"
-                      onClick={() => setMapKey((k) => k + 1)}
-                      aria-label="Muat ulang peta"
-                      className="absolute left-1/2 top-[80%] z-10 inline-flex -translate-x-1/2 cursor-pointer items-center gap-1.5 rounded-full border border-[#d8b46a] bg-[#6a0119]/90 px-3.5 py-1.5 text-[10px] font-medium uppercase tracking-wider text-[#f6dede] shadow-lg transition active:scale-90"
-                    >
-                      <RotateCw className="h-3 w-3" /> Muat ulang
-                    </button>
-                  </div>
+                  <MapEmbed />
                 </div>
                 <motion.a
                   whileHover={{ scale: 1.05 }}
