@@ -116,6 +116,8 @@ const OFFSETS: Record<From, object> = {
   zoom: { scale: 0.85 },
 };
 
+/* REVISI: margin -120px -> -40px dan durasi 1.9s -> 1.3s
+   supaya konten di layar HP tidak lama kosong / tidak terlewat. */
 function Reveal({
   children,
   className = "",
@@ -131,8 +133,8 @@ function Reveal({
     <motion.div
       initial={{ opacity: 0, ...OFFSETS[from] }}
       whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-120px" }}
-      transition={{ duration: 1.9, delay, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 1.3, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
       {children}
@@ -1278,12 +1280,14 @@ export default function WeddingInvitation() {
                   />
                 </Reveal>
 
+                {/* REVISI: pakai `animate` (bukan `whileInView`) agar nama
+                    mempelai selalu muncul di HP. Section home sudah terlihat
+                    begitu undangan dibuka, jadi tidak perlu IntersectionObserver. */}
                 <motion.h1
                   style={script}
                   initial={{ clipPath: "inset(-25% 100% -25% -5%)" }}
-                  whileInView={{ clipPath: "inset(-25% -5% -25% -5%)" }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 3.4, ease: "easeInOut" }}
+                  animate={{ clipPath: "inset(-25% -5% -25% -5%)" }}
+                  transition={{ duration: 3.4, ease: "easeInOut", delay: 0.8 }}
                   className="mb-6 mt-2 leading-tight"
                 >
                   <span className="block text-[2.5rem] leading-[1.2] sm:text-5xl">
@@ -1549,9 +1553,9 @@ export default function WeddingInvitation() {
                     key={src}
                     initial={{ opacity: 0, scale: 0.8, rotate: i % 2 ? 4 : -4 }}
                     whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-                    viewport={{ once: true, margin: "-100px" }}
+                    viewport={{ once: true, margin: "-40px" }}
                     transition={{
-                      duration: 1.6,
+                      duration: 1.2,
                       delay: (i % 2) * 0.25,
                       ease: [0.22, 1, 0.36, 1],
                     }}
@@ -1648,7 +1652,7 @@ export default function WeddingInvitation() {
             <footer className="relative overflow-hidden bg-[#3a0009] px-6 pb-32 pt-10 text-center text-[#f6dede]">
               <Sparkles count={8} />
               <Reveal className="relative flex flex-col items-center">
-                <p style={display} className="text-2xl font-medium">
+                <p style={display} className="text-xl font-medium">
                   Mau undangan digital seperti ini?
                 </p>
                 <p className="mx-auto mt-2 max-w-[17rem] text-xs font-light leading-relaxed opacity-90">
