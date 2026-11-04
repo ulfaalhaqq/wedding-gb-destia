@@ -1487,31 +1487,33 @@ export default function WeddingInvitation() {
                 </p>
               </div>
 
-              <Reveal from="zoom" className="relative mt-8">
-                <h3
-                  style={{
-                    ...display,
-                    textShadow: "0 2px 8px rgba(0,0,0,.45)",
-                  }}
-                  className="text-2xl font-bold uppercase tracking-[0.1em] text-[#f3d98b] sm:text-3xl"
-                >
-                  Lokasi Pernikahan
-                </h3>
+              {/* FIX PETA: Reveal (animasi scale) hanya membungkus judul.
+                  Iframe tidak lagi di dalam elemen yang di-animate, tanpa
+                  CSS filter berat, dan tanpa loading="lazy" supaya tidak
+                  crash/reload saat scroll di HP. */}
+              <div className="relative mt-8">
+                <Reveal from="zoom">
+                  <h3
+                    style={{
+                      ...display,
+                      textShadow: "0 2px 8px rgba(0,0,0,.45)",
+                    }}
+                    className="text-2xl font-bold uppercase tracking-[0.1em] text-[#f3d98b] sm:text-3xl"
+                  >
+                    Lokasi Pernikahan
+                  </h3>
+                </Reveal>
                 <div className="mt-4 rounded-[1.75rem] border-2 border-[#d8b46a] p-1.5 shadow-2xl">
                   <div className="relative overflow-hidden rounded-[1.25rem] border border-[#d8b46a]/70 bg-[#3a0009]">
                     <iframe
                       title="Peta lokasi pernikahan"
                       src={MAP_EMBED}
                       className="h-72 w-full sm:h-80"
-                      style={{
-                        border: 0,
-                        filter: "grayscale(1) brightness(0.8) contrast(1.6)",
-                      }}
-                      loading="lazy"
+                      style={{ border: 0 }}
                       allowFullScreen
                       referrerPolicy="no-referrer-when-downgrade"
                     />
-                    <div className="pointer-events-none absolute inset-0 bg-[#8a1a33] opacity-60 mix-blend-color" />
+                    <div className="pointer-events-none absolute inset-0 bg-[#8a1a33]/25" />
                   </div>
                 </div>
                 <motion.a
@@ -1525,7 +1527,7 @@ export default function WeddingInvitation() {
                   <Navigation className="h-3.5 w-3.5" /> Buka di Google Maps
                   <Sheen />
                 </motion.a>
-              </Reveal>
+              </div>
             </section>
 
             {/* ---------- GALERI ---------- */}
